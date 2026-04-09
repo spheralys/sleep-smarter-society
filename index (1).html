@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sleep Smarter Society — 7-Day Sleep Behavior Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --night: #0d0f14; --deep: #13161e; --surface: #1a1e28;
+    --border: rgba(255,255,255,0.07); --muted: rgba(255,255,255,0.35);
+    --body: rgba(255,255,255,0.65); --bright: rgba(255,255,255,0.92);
+    --accent: #7eb8a4; --accent-dim: rgba(126,184,164,0.10);
+    --accent-mid: rgba(126,184,164,0.22); --gold: #c9a96e;
+    --gold-dim: rgba(201,169,110,0.12);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--night); color: var(--body); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.75; overflow-x: hidden; }
+
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stars::before, .stars::after { content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.25) 0%, transparent 100%), radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.2) 0%, transparent 100%), radial-gradient(1px 1px at 40% 8%, rgba(255,255,255,0.3) 0%, transparent 100%), radial-gradient(1px 1px at 60% 25%, rgba(255,255,255,0.15) 0%, transparent 100%), radial-gradient(1px 1px at 75% 55%, rgba(255,255,255,0.2) 0%, transparent 100%), radial-gradient(1px 1px at 88% 12%, rgba(255,255,255,0.25) 0%, transparent 100%), radial-gradient(1px 1px at 5% 70%, rgba(255,255,255,0.18) 0%, transparent 100%), radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.12) 0%, transparent 100%), radial-gradient(1px 1px at 92% 75%, rgba(255,255,255,0.2) 0%, transparent 100%), radial-gradient(1px 1px at 33% 90%, rgba(255,255,255,0.15) 0%, transparent 100%); }
+  .stars::after { background-image: radial-gradient(1px 1px at 18% 30%, rgba(255,255,255,0.12) 0%, transparent 100%), radial-gradient(1px 1px at 70% 10%, rgba(255,255,255,0.18) 0%, transparent 100%), radial-gradient(1px 1px at 45% 60%, rgba(255,255,255,0.1) 0%, transparent 100%), radial-gradient(1px 1px at 82% 40%, rgba(255,255,255,0.15) 0%, transparent 100%), radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.2) 0%, transparent 100%); animation: twinkle 6s ease-in-out infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.4; } to { opacity: 1; } }
+
+  .container { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+  nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; max-width: 680px; margin: 0 auto; padding: 28px 24px; border-bottom: 1px solid var(--border); }
+  .logo { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--accent); letter-spacing: 0.05em; text-decoration: none; }
+  .nav-badge { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero-eyebrow { display: inline-block; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(34px, 6vw, 50px); font-weight: 400; color: var(--bright); line-height: 1.2; margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 17px; color: var(--body); max-width: 520px; margin: 0 auto 48px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s ease forwards 0.8s; }
+  .moon-divider { text-align: center; padding: 24px 0 0; color: var(--muted); font-size: 20px; opacity: 0; animation: fadeUp 0.8s ease forwards 1s; }
+
+  .btn-primary { display: inline-block; padding: 15px 32px; background: var(--accent); color: var(--night); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.25s ease; }
+  .btn-primary:hover { background: #8fcaba; transform: translateY(-1px); }
+  .btn-gold { display: inline-block; padding: 15px 32px; background: var(--gold); color: #1a1408; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.25s ease; }
+  .btn-gold:hover { background: #d4b47a; transform: translateY(-1px); }
+
+  .section { padding: 72px 0; border-top: 1px solid var(--border); }
+  .section-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .section h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4vw, 34px); font-weight: 400; color: var(--bright); line-height: 1.3; margin-bottom: 24px; }
+  .section p { font-size: 16px; color: var(--body); margin-bottom: 16px; max-width: 580px; }
+
+  blockquote { margin: 36px 0; padding: 24px 28px; border-left: 2px solid var(--accent); background: var(--accent-dim); border-radius: 0 4px 4px 0; }
+  blockquote p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; color: var(--bright); margin: 0 0 10px; }
+  blockquote cite { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; font-style: normal; }
+
+  .steps { margin-top: 40px; display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--accent); opacity: 0.5; line-height: 1; padding-top: 4px; }
+  .step-title { font-size: 15px; font-weight: 500; color: var(--bright); margin-bottom: 6px; }
+  .step-body { font-size: 14px; color: var(--body); line-height: 1.65; }
+  .step-time { display: inline-block; margin-top: 8px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); padding: 3px 10px; border-radius: 20px; }
+
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+  @media (max-width: 560px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .pricing-card { padding: 32px 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; display: flex; flex-direction: column; transition: border-color 0.2s ease; }
+  .pricing-card:hover { border-color: rgba(255,255,255,0.14); }
+  .pricing-card.featured { border-color: var(--gold); background: linear-gradient(160deg, #1a1e28 0%, #1c1a14 100%); position: relative; }
+  .featured-badge { position: absolute; top: -1px; right: 20px; background: var(--gold); color: #1a1408; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 12px; border-radius: 0 0 4px 4px; }
+  .plan-name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--bright); margin-bottom: 6px; }
+  .plan-tagline { font-size: 12px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+  .plan-price { font-family: 'Playfair Display', serif; font-size: 42px; color: var(--bright); line-height: 1; margin-bottom: 4px; }
+  .pricing-card.featured .plan-price { color: var(--gold); }
+  .plan-period { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+  .plan-features { list-style: none; margin-bottom: 32px; flex: 1; }
+  .plan-features li { font-size: 13px; color: var(--body); padding: 7px 0; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid var(--border); }
+  .plan-features li:last-child { border-bottom: none; }
+  .plan-features li::before { content: ''; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+  .pricing-card.featured .plan-features li::before { background: var(--gold); }
+  .plan-btn { display: block; padding: 14px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.25s ease; }
+  .plan-btn-green { background: var(--accent); color: var(--night); }
+  .plan-btn-green:hover { background: #8fcaba; transform: translateY(-1px); }
+  .plan-btn-gold { background: var(--gold); color: #1a1408; }
+  .plan-btn-gold:hover { background: #d4b47a; transform: translateY(-1px); }
+  .plan-note { font-size: 11px; color: var(--muted); margin-top: 14px; line-height: 1.6; text-align: center; }
+
+  .clinician-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 32px; }
+  @media (max-width: 480px) { .clinician-grid { grid-template-columns: 1fr; } }
+  .clinician-item { padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; }
+  .clinician-role { font-size: 13px; font-weight: 500; color: var(--bright); margin-bottom: 4px; }
+  .clinician-loc { font-size: 12px; color: var(--muted); }
+
+  .proof-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+  .proof-item { padding: 20px 24px; background: var(--accent-dim); border: 1px solid var(--accent-mid); border-radius: 4px; }
+  .proof-text { font-size: 14px; color: var(--bright); font-style: italic; margin-bottom: 10px; line-height: 1.65; }
+  .proof-source { font-size: 11px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .clarity { padding: 60px 0; text-align: center; border-top: 1px solid var(--border); }
+  .clarity p { font-family: 'Playfair Display', serif; font-size: clamp(18px, 3vw, 24px); font-style: italic; color: var(--bright); line-height: 1.6; max-width: 480px; margin: 0 auto 12px; }
+  .clarity small { font-size: 13px; color: var(--muted); }
+
+  footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; }
+  footer p { font-size: 12px; color: var(--muted); line-height: 1.9; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav>
+  <a href="https://sleepsmartersociety.com" class="logo">Sleep Smarter Society</a>
+  <span class="nav-badge">7-Day Behavioral Assessment</span>
+</nav>
+
+<div class="container">
+
+  <section class="hero">
+    <span class="hero-eyebrow">Behavioral Sleep Assessment</span>
+    <h1>See your sleep clearly<br>for the <em>first time</em></h1>
+    <p class="hero-sub">Not another tracker. A structured 7-day observation that turns how you actually feel into visible, measurable patterns — before you try to fix anything.</p>
+    <div class="hero-actions">
+      <a href="https://sleep-smarter-society.circle.so/checkout/7-day-sleep-behavior-assessment" class="btn-primary">Start — $39</a>
+      <a href="https://sleep-smarter-society.circle.so/checkout/7-day-sleep-behavior-assessment-clinical-analysis" class="btn-gold">Full Report — $97</a>
+    </div>
+    <div class="moon-divider">◐</div>
+  </section>
+
+  <section class="section fade-in">
+    <p class="section-label">The gap no one talks about</p>
+    <h2>Everything looks fine.<br>You still feel exhausted.</h2>
+    <p>Bloodwork normal. No obvious disorder. Maybe you've tried adjusting your routine, your supplements, your sleep hygiene — and something still doesn't add up.</p>
+    <p>The problem usually isn't that something is missing. It's that no one has a clear picture of what's actually happening in your day-to-day before making decisions about what to change.</p>
+    <p>That picture takes weeks to build in a clinical setting. Sometimes months. Often it never fully surfaces because the focus moves elsewhere before the behavioral pattern becomes visible.</p>
+    <blockquote>
+      <p>"This kind of organized behavioral clarity changes how I approach the first sessions. It surfaces in 7 days what usually takes weeks."</p>
+      <cite>— Sleep clinician, after reviewing assessment output</cite>
+    </blockquote>
+  </section>
+
+  <section class="section fade-in">
+    <p class="section-label">How it works</p>
+    <h2>Simple enough to follow.<br>Structured enough to reveal patterns.</h2>
+    <p>Three to five minutes a day. That's it on your side.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <div>
+          <p class="step-title">One daily focus</p>
+          <p class="step-body">Each day centers on one sleep-related behavioral factor — something you can understand and apply the same day. No clinical background required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <div>
+          <p class="step-title">Night notes before bed</p>
+          <p class="step-body">A short structured note based on CBT-I sleep journal practice — adapted so you're not pressured to reflect perfectly. Fill it in once, honestly, and move on.</p>
+          <span class="step-time">~2 min</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <div>
+          <p class="step-title">Morning check-in</p>
+          <p class="step-body">A brief observation after waking. How you felt, what you noticed during the night. Nothing more.</p>
+          <span class="step-time">~1 min</span>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">07</span>
+        <div>
+          <p class="step-title">Your behavioral picture emerges</p>
+          <p class="step-body">Patterns that were invisible become visible. The framework organizes your subjective experience into structured, measurable data — the kind wearables can't capture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fade-in">
+    <p class="section-label">Two versions. One process.</p>
+    <h2>Choose the level of<br>clarity you need.</h2>
+    <p>Both versions use the exact same 7-day observation. The difference is how deep the output goes — and who needs to read it.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <p class="plan-name">Sleep Reset</p>
+        <p class="plan-tagline">Your behavioral patterns in numbers. A clear panorama of how your sleep shifted over 7 days.</p>
+        <p class="plan-price">$39</p>
+        <p class="plan-period">One-time · no subscription</p>
+        <ul class="plan-features">
+          <li>7-day guided behavioral observation</li>
+          <li>Night notes + morning check-ins</li>
+          <li>Baseline score — where you start</li>
+          <li>Daily consistency percentage</li>
+          <li>Reset results — 7-day evolution graph</li>
+          <li>3–5 minutes per day</li>
+        </ul>
+        <a href="https://sleep-smarter-society.circle.so/checkout/7-day-sleep-behavior-assessment" class="plan-btn plan-btn-green">Start Sleep Reset</a>
+        <p class="plan-note">Best for: understanding your pattern before trying to change anything</p>
+      </div>
+
+      <div class="pricing-card featured">
+        <span class="featured-badge">Most complete</span>
+        <p class="plan-name">Clinical Clarity</p>
+        <p class="plan-tagline">Everything in Sleep Reset, plus a full behavioral report that makes your patterns explicit — designed to inform treatment.</p>
+        <p class="plan-price">$97</p>
+        <p class="plan-period">One-time · no subscription</p>
+        <ul class="plan-features">
+          <li>Everything in Sleep Reset</li>
+          <li>Full structured behavioral report</li>
+          <li>Explicit pattern analysis — not just numbers</li>
+          <li>Behavioral correlations identified</li>
+          <li>Designed to share with your doctor or therapist</li>
+          <li>The picture that usually takes weeks to build</li>
+        </ul>
+        <a href="https://sleep-smarter-society.circle.so/checkout/7-day-sleep-behavior-assessment-clinical-analysis" class="plan-btn plan-btn-gold">Start Clinical Clarity</a>
+        <p class="plan-note">Best for: people in treatment, or ready to take findings to a clinician</p>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); margin-top:20px; text-align:center;">Neither version is a diagnosis or a treatment plan.<br>Both give you something most people never have: clarity about what's actually happening.</p>
+  </section>
+
+  <section class="section fade-in">
+    <p class="section-label">Reviewed by clinicians</p>
+    <h2>Built with input from<br>the people who treat sleep.</h2>
+    <p>The assessment framework has been reviewed and tested by practitioners across different disciplines — not just researchers, but the people who sit across from patients every week.</p>
+    <div class="clinician-grid">
+      <div class="clinician-item">
+        <p class="clinician-role">Sleep Medicine Clinician</p>
+        <p class="clinician-loc">United Kingdom</p>
+      </div>
+      <div class="clinician-item">
+        <p class="clinician-role">Sleep Dentist</p>
+        <p class="clinician-loc">Dental Sleep Practice</p>
+      </div>
+      <div class="clinician-item">
+        <p class="clinician-role">CBT-I Psychologist</p>
+        <p class="clinician-loc">United States</p>
+      </div>
+      <div class="clinician-item">
+        <p class="clinician-role">Clinical Specialist</p>
+        <p class="clinician-loc">Public Health Sector</p>
+      </div>
+    </div>
+    <blockquote style="margin-top:32px;">
+      <p>"The behavioral picture this produces is the kind of clarity that usually takes weeks to piece together in a clinical setting — if it surfaces at all."</p>
+      <cite>— Clinician feedback after system review</cite>
+    </blockquote>
+  </section>
+
+  <section class="section fade-in">
+    <p class="section-label">What people have found</p>
+    <h2>The pattern was there.<br>It just wasn't visible yet.</h2>
+    <div class="proof-grid">
+      <div class="proof-item">
+        <p class="proof-text">"The nights I described as 'fine' were actually the ones where I felt worst the next morning. I'd just stopped noticing the connection."</p>
+        <span class="proof-source">Assessment participant</span>
+      </div>
+      <div class="proof-item">
+        <p class="proof-text">"Once the behavioral picture was clear, the next step became obvious. Not because the answer was new — because the noise was gone."</p>
+        <span class="proof-source">Assessment participant</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="clarity fade-in">
+    <p>"Sleep isn't about chasing a perfect score. It's about consistency, energy, and how you actually feel day to day."</p>
+    <small>— Pedro, founder of Sleep Smarter Society</small>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>
+      Sleep Smarter Society &nbsp;·&nbsp; <a href="https://sleepsmartersociety.com" target="_blank">sleepsmartersociety.com</a><br>
+      <span style="font-size:11px; opacity:0.5;">This assessment does not diagnose or treat any sleep disorder. Results are for personal clarity and behavioral awareness only.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
